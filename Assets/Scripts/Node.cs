@@ -6,6 +6,7 @@ public class Node {
 
     private int id;
     private Vector3 position;
+    private PathFinder pathFinder;
 
     public Node(int id, Vector3 position) {
         this.id = id;
@@ -25,6 +26,18 @@ public class Node {
         get
         {
             return position;
+        }
+    }
+
+    public PathFinder PathFinder
+    {
+        set
+        {
+            this.pathFinder = value;
+        }
+        get
+        {
+            return pathFinder;
         }
     }
 }

@@ -5,9 +5,9 @@ using UnityEngine;
 public class NodeNavigation : MonoBehaviour {
 
     public float speed = 5f;
-    public GraphComponent graphComponent;
-    public List<DestinationNodeComponent> destinations;
-    public NodeComponent startingNode;
+    public GraphContainer graphComponent;
+    public List<Node> destinations;
+    public NodeContainer startingNode;
 
     private Queue<Node> queue;
     private Node lastNode;
@@ -15,6 +15,7 @@ public class NodeNavigation : MonoBehaviour {
 
     void Start ()
     {
+        destinations = new List<Node>();
         if (startingNode == null)
         {
             lastNode = GetClosestNode(graphComponent.Graph.Nodes);
@@ -52,7 +53,7 @@ public class NodeNavigation : MonoBehaviour {
 
     private void ChangeDestination()
     {
-        List<Node> path = graphComponent.GetPath(lastNode.Id, GetNextDestination().id);
+        List<Node> path = graphComponent.GetPath(lastNode.Id, GetNextDestination().Id);
         if (path != null)
         {
             foreach (Node node in path)
@@ -100,20 +101,27 @@ public class NodeNavigation : MonoBehaviour {
         return null;
     }
 
-    private NodeComponent GetNextDestination()
+    private Node GetNextDestination()
     {
         if (destinations.Count > 0)
         {
-            NodeComponent nextDestination = destinations[0];
+            Node nextDestination = destinations[0];
             destinations.RemoveAt(0);
             return nextDestination;
         }
         return null;
     }
 
-    public void AddDestination(DestinationNodeComponent node)
+    public void AddDestination(Node node)
     {
         destinations.Add(node);
+    }
+
+    public void Reset()
+    {
+        nextNode = null;
+        destinations.Clear();
+        queue.Clear();
     }
 
     void OnDrawGizmos()

@@ -17,6 +17,13 @@ public class Graph {
         }
     }
 
+    public Node CreateTempNode(Vector3 position)
+    {
+        Node node = new Node(999, position);
+        node.PathFinder = new PathFinder(this, node.Id);
+        return node;
+    }
+
     public Edge[] Edges
     {
         get

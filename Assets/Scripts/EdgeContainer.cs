@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EdgeComponent : MonoBehaviour
+public class EdgeContainer : MonoBehaviour
 {
-    public NodeComponent nodeA;
-    public NodeComponent nodeB;
+    public NodeContainer nodeA;
+    public NodeContainer nodeB;
     private Edge edge;
     private bool initialized = false;
 

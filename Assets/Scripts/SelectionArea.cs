@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Room : MonoBehaviour {
+public class SelectionArea : MonoBehaviour {
 
-    public DestinationNodeComponent destinationNodeComponent;
+    public DestinationNodeContainer destinationNodeContainer;
 
     // Use this for initialization
     void Start () {

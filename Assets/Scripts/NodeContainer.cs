@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [DisallowMultipleComponent]
-public class NodeComponent : MonoBehaviour
+public class NodeContainer : MonoBehaviour
 {
     private static int lastId;
     public int id;

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DestinationNodeComponent : NodeComponent {
+public class DestinationNodeContainer : NodeContainer {
 
     void OnDrawGizmos()
     {
