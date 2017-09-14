@@ -23,6 +23,10 @@ public class Node {
 
     public Vector3 Position
     {
+        set
+        {
+            this.position = value;
+        }
         get
         {
             return position;

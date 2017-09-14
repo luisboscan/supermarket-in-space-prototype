@@ -14,6 +14,7 @@ public class GraphContainer : MonoBehaviour {
         foreach (Node node in nodes)
         {
             node.PathFinder = new PathFinder(graph, node.Id);
+            node.PathFinder.Initialize();
         }
     }
 

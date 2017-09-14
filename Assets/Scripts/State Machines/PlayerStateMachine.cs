@@ -30,10 +30,7 @@ public class PlayerStateMachine : MonoBehaviour {
         SelectionArea selectionArea;
         if (playerInput.selected && (selectionArea = GetSelectedArea()) != null)
         {
-            playerNavigation.Reset();
-            //Node tempNode = graphContainer.Graph.CreateTempNode(playerNavigation.transform.position);
-            //playerNavigation.AddDestination(tempNode);
-            playerNavigation.AddDestination(selectionArea.destinationNodeContainer.Node);
+            playerNavigation.SetDestination(selectionArea.destinationNodeContainer.Node);
         }
     }
 

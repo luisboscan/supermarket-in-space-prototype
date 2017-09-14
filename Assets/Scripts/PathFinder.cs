@@ -5,25 +5,32 @@ using UnityEngine;
 public class PathFinder
 {
     private Graph graph;
+    private int source;
     private Dictionary<int, Node> settledNodes;
     private Dictionary<int, Node> unSettledNodes;
     private Dictionary<int, Node> predecessors;
     private Dictionary<int, float> distance;
+    private bool dirty = true;
 
     public PathFinder(Graph graph, int source)
-    {
-        this.graph = graph;
-        Initialize(graph.Nodes[source]);
-    }
-
-    private void Initialize(Node source)
     {
         settledNodes = new Dictionary<int, Node>();
         unSettledNodes = new Dictionary<int, Node>();
         distance = new Dictionary<int, float>();
         predecessors = new Dictionary<int, Node>();
-        distance[source.Id] = 0;
-        unSettledNodes[source.Id] = source;
+        this.graph = graph;
+        this.source = source;
+    }
+
+    public void Initialize()
+    {
+        Node sourceNode = graph.Nodes[source];
+        settledNodes.Clear();
+        unSettledNodes.Clear();
+        distance.Clear();
+        predecessors.Clear();
+        distance[sourceNode.Id] = 0;
+        unSettledNodes[sourceNode.Id] = sourceNode;
         while (unSettledNodes.Count > 0)
         {
             Node node = getMinimum(unSettledNodes);
@@ -31,6 +38,7 @@ public class PathFinder
             unSettledNodes.Remove(node.Id);
             FindMinimalDistances(node);
         }
+        dirty = false;
     }
 
     private void FindMinimalDistances(Node node)
@@ -125,5 +133,13 @@ public class PathFinder
         // Put it into the correct order
         path.Reverse();
         return path;
+    }
+
+    public bool Dirty
+    {
+        get
+        {
+            return dirty;
+        }
     }
 }

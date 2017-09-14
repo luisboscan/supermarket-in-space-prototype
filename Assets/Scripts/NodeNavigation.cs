@@ -11,7 +11,9 @@ public class NodeNavigation : MonoBehaviour {
 
     private Queue<Node> queue;
     private Node lastNode;
+    private Node currentNode;
     private Node nextNode;
+    private Node tempNode;
 
     void Start ()
     {
@@ -23,6 +25,7 @@ public class NodeNavigation : MonoBehaviour {
         {
             lastNode = startingNode.Node;
         }
+        currentNode = lastNode;
         transform.position = lastNode.Position;
         queue = new Queue<Node>();
     }
@@ -46,6 +49,7 @@ public class NodeNavigation : MonoBehaviour {
         if (nextPosition == nextNode.Position)
         {
             lastNode = nextNode;
+            currentNode = lastNode;
             nextNode = GetNextNode();
         }
         transform.position = nextPosition;
@@ -53,7 +57,7 @@ public class NodeNavigation : MonoBehaviour {
 
     private void ChangeDestination()
     {
-        List<Node> path = graphComponent.GetPath(lastNode.Id, GetNextDestination().Id);
+        List<Node> path = graphComponent.GetPath(currentNode.Id, GetNextDestination().Id);
         if (path != null)
         {
             foreach (Node node in path)
@@ -115,6 +119,50 @@ public class NodeNavigation : MonoBehaviour {
     public void AddDestination(Node node)
     {
         destinations.Add(node);
+    }
+
+    public void SetDestination(Node node)
+    {
+        if (nextNode == null)
+        {
+            AddDestination(node);
+            return;
+        }
+        if (tempNode == null)
+        {
+            tempNode = graphComponent.Graph.CreateNode(transform.position);
+        }
+        else
+        {
+            tempNode.Position = transform.position;
+        }
+        graphComponent.Graph.RemoveEdgesAroundNode(tempNode);
+        graphComponent.Graph.CreateEdge(tempNode, lastNode);
+        graphComponent.Graph.CreateEdge(tempNode, nextNode);
+        tempNode.PathFinder.Initialize();
+        Reset();
+        currentNode = tempNode;
+        AddDestination(node);
+    }
+
+    public Node LastNode
+    {
+        set
+        {
+            lastNode = value;
+        }
+        get
+        {
+            return lastNode;
+        }
+    }
+
+    public Node NextNode
+    {
+        get
+        {
+            return nextNode;
+        }
     }
 
     public void Reset()

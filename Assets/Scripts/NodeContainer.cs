@@ -5,8 +5,7 @@ using UnityEngine;
 [DisallowMultipleComponent]
 public class NodeContainer : MonoBehaviour
 {
-    private static int lastId;
-    public int id;
+    public static int lastId;
     private Node node;
     private bool initialized = false;
 
@@ -21,8 +20,7 @@ public class NodeContainer : MonoBehaviour
         {
             return;
         }
-        this.id = ++lastId;
-        this.node = new Node(id, transform.position);
+        this.node = new Node(++lastId, transform.position);
         initialized = true;
     }
 
