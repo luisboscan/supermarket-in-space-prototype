@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class NodeNavigation : MonoBehaviour {
 
+    public const string DestinationReachedNotification = "Navigation.DestinationReachedNotification";
+
     public float speed = 5f;
     public GraphContainer graphComponent;
     public List<Node> destinations;
@@ -51,6 +53,10 @@ public class NodeNavigation : MonoBehaviour {
             lastNode = nextNode;
             currentNode = lastNode;
             nextNode = GetNextNode();
+            if (nextNode == null)
+            {
+                this.PostNotification(DestinationReachedNotification, currentNode);
+            }
         }
         transform.position = nextPosition;
     }
