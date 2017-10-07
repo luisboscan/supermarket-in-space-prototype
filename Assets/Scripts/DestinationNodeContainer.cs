@@ -17,6 +17,7 @@ public class DestinationNodeContainer : NodeContainer {
         {
             task.AddObserver(OnTaskStart, Task.TaskStartNotification);
             task.AddObserver(OnTaskComplete, Task.TaskCompleteNotification);
+            task.AddObserver(OnTaskComplete, Task.TaskStoppedNotification);
         }
     }
 

@@ -10,9 +10,19 @@ public class TaskHandler : MonoBehaviour {
 	void Start () {
         graphContainer = GameObject.FindGameObjectWithTag("Graph").GetComponent<GraphContainer>();
         this.AddObserver(OnDestinationReached, NodeNavigation.DestinationReachedNotification);
-	}
-	
-	void OnDestinationReached(object sender, object args)
+        this.AddObserver(OnDestinationChanged, NodeNavigation.DestinationChangedNotification);
+    }
+
+    void OnDestinationChanged(object sender, object args)
+    {
+        if (currentTask != null)
+        {
+            currentTask.StopTask();
+        }
+        OnTaskCompleted(sender, args);
+    }
+
+    void OnDestinationReached(object sender, object args)
     {
         Node node = ((Node)args);
         DestinationNodeContainer destinationNodeContainer = (DestinationNodeContainer) graphContainer.GetNodeContainerForNode(node);
@@ -29,8 +39,13 @@ public class TaskHandler : MonoBehaviour {
 
     void OnTaskCompleted(object sender, object args)
     {
-        currentTask.RemoveObserver(OnTaskCompleted, Task.TaskCompleteNotification);
+        RemoveObservers();
         currentTask = null;
         GetComponent<NodeNavigation>().enabled = true;
+    }
+
+    private void RemoveObservers()
+    {
+        currentTask.RemoveObserver(OnTaskCompleted, Task.TaskCompleteNotification);
     }
 }

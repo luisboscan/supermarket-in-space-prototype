@@ -5,6 +5,7 @@ using UnityEngine;
 public class NodeNavigation : MonoBehaviour {
 
     public const string DestinationReachedNotification = "Navigation.DestinationReachedNotification";
+    public const string DestinationChangedNotification = "Navigation.DestinationChangedNotification";
 
     public float speed = 5f;
     public GraphContainer graphComponent;
@@ -132,23 +133,25 @@ public class NodeNavigation : MonoBehaviour {
         if (nextNode == null)
         {
             AddDestination(node);
-            return;
-        }
-        if (tempNode == null)
+        } else
         {
-            tempNode = graphComponent.Graph.CreateNode(transform.position);
+            if (tempNode == null)
+            {
+                tempNode = graphComponent.Graph.CreateNode(transform.position);
+            }
+            else
+            {
+                tempNode.Position = transform.position;
+            }
+            graphComponent.Graph.RemoveEdgesAroundNode(tempNode);
+            graphComponent.Graph.CreateEdge(tempNode, lastNode);
+            graphComponent.Graph.CreateEdge(tempNode, nextNode);
+            tempNode.PathFinder.Initialize();
+            Reset();
+            currentNode = tempNode;
+            AddDestination(node);
         }
-        else
-        {
-            tempNode.Position = transform.position;
-        }
-        graphComponent.Graph.RemoveEdgesAroundNode(tempNode);
-        graphComponent.Graph.CreateEdge(tempNode, lastNode);
-        graphComponent.Graph.CreateEdge(tempNode, nextNode);
-        tempNode.PathFinder.Initialize();
-        Reset();
-        currentNode = tempNode;
-        AddDestination(node);
+        this.PostNotification(DestinationChangedNotification, node);
     }
 
     public Node LastNode

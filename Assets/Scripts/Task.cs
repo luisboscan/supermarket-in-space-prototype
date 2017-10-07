@@ -6,11 +6,12 @@ public class Task : MonoBehaviour
 {
     public const string TaskCompleteNotification = "Tasks.TaskCompleteNotification";
     public const string TaskStartNotification = "Tasks.TaskStartNotification";
+    public const string TaskStoppedNotification = "Tasks.TaskStoppedNotification";
 
     public float timeToComplete = 5f;
-    public float taskDelay = 5f;
     public int priority = 1;
     public LayerMask targetMask;
+    public ProgressBar progressBar;
 
     private float counter;
     private bool running;
@@ -28,11 +29,11 @@ public class Task : MonoBehaviour
         }
 
         counter += Time.deltaTime;
-        Debug.Log(counter);
+        progressBar.SetValue(counter / timeToComplete);
         if (counter >= timeToComplete)
         {
             Debug.Log("Task Finished");
-            running = false;
+            OnTaskFinished();
             this.PostNotification(Task.TaskCompleteNotification);
         }
     }
@@ -42,6 +43,25 @@ public class Task : MonoBehaviour
         Debug.Log("Task Started");
         counter = 0;
         running = true;
+        progressBar.gameObject.SetActive(true);
+        progressBar.Reset();
+        progressBar.gameObject.transform.position = Camera.main.WorldToScreenPoint(transform.position);
         this.PostNotification(Task.TaskStartNotification);
+    }
+
+    public void StopTask()
+    {
+        bool interrupted = running;
+        OnTaskFinished();
+        if (interrupted)
+        {
+            this.PostNotification(Task.TaskStoppedNotification);
+        }
+    }
+
+    private void OnTaskFinished()
+    {
+        progressBar.gameObject.SetActive(false);
+        running = false;
     }
 }
