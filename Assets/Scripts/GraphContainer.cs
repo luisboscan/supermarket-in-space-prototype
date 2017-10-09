@@ -85,6 +85,18 @@ public class GraphContainer : MonoBehaviour {
         return graph.Nodes[source].PathFinder.GetPath(destination);
     }
 
+    public NodeContainer GetNodeContainerForNode(Node node)
+    {
+        foreach (NodeContainer nodeContainer in GetNodeComponents())
+        {
+            if (nodeContainer.Node.Id == node.Id)
+            {
+                return nodeContainer;
+            }
+        }
+        return null;
+    }
+
     public Graph Graph
     {
         get
