@@ -5,10 +5,10 @@ using UnityEngine;
 public class NodeNavigation : MonoBehaviour {
 
     public float speed = 5f;
-    public GraphContainer graphComponent;
     public List<Node> destinations;
     public NodeContainer startingNode;
-
+    
+    private GraphContainer graphComponent;
     private Queue<Node> queue;
     private Node lastNode;
     private Node currentNode;
@@ -17,6 +17,7 @@ public class NodeNavigation : MonoBehaviour {
 
     void Start ()
     {
+        graphComponent = GameObject.FindGameObjectWithTag("Graph").GetComponent<GraphContainer>();
         destinations = new List<Node>();
         if (startingNode == null)
         {

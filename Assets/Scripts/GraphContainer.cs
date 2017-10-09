@@ -5,6 +5,7 @@ using UnityEngine;
 public class GraphContainer : MonoBehaviour {
 
     private Graph graph;
+    private Dictionary<ShoppingSectionType, ShoppingSection> shoppingSections;
 
     void Awake ()
     {
@@ -16,6 +17,17 @@ public class GraphContainer : MonoBehaviour {
             node.PathFinder = new PathFinder(graph, node.Id);
             node.PathFinder.Initialize();
         }
+        ShoppingSection[] shoppingSectionArray = GetComponentsInChildren<ShoppingSection>();
+        shoppingSections = new Dictionary<ShoppingSectionType, ShoppingSection>();
+        foreach (ShoppingSection shoppingSection in shoppingSectionArray)
+        {
+            shoppingSections.Add(shoppingSection.shoppingSectionType, shoppingSection);
+        }
+    }
+    
+    public ShoppingSection GetShoppingSectionByType(ShoppingSectionType shoppingSectionType)
+    {
+        return shoppingSections.ContainsKey(shoppingSectionType) ? shoppingSections[shoppingSectionType] : null;
     }
 
     private NodeContainer[] GetNodeComponents()
