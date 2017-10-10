@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public enum CustomerStates {
-    Shopping,
-    Paying
+    ChoosingItem,
+    LookingForItem,
+    GrabbingItem,
+    GoingToPay,
+    Paying,
+    Exiting
 }

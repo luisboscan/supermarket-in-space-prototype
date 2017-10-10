@@ -13,17 +13,14 @@ public class DestinationNodeContainer : NodeContainer {
         tasks = GetComponents<Task>();
         Array.Sort(tasks, delegate (Task x, Task y) { return x.priority.CompareTo(y.priority); });
 
-        foreach (Task task in tasks)
-        {
-            task.AddObserver(OnTaskStart, Task.TaskStartNotification);
-            task.AddObserver(OnTaskComplete, Task.TaskCompleteNotification);
-            task.AddObserver(OnTaskComplete, Task.TaskStoppedNotification);
-        }
+        this.AddObserver(OnTaskStart, Task.TaskStartNotification, gameObject);
+        this.AddObserver(OnTaskComplete, Task.TaskCompleteNotification, gameObject);
+        this.AddObserver(OnTaskComplete, Task.TaskStoppedNotification, gameObject);
     }
 
     void OnTaskStart(object sender, object args)
     {
-        currentTask = (Task) sender;
+        currentTask = (Task) args;
     }
 
     void OnTaskComplete(object sender, object args)

@@ -97,6 +97,16 @@ public class GraphContainer : MonoBehaviour {
         return null;
     }
 
+    public NodeContainer GetPaymentNode()
+    {
+        return GameObject.FindGameObjectWithTag("Payment").GetComponent<NodeContainer>();
+    }
+
+    public NodeContainer GetExitNode()
+    {
+        return GameObject.FindGameObjectWithTag("Exit").GetComponent<NodeContainer>();
+    }
+
     public Graph Graph
     {
         get

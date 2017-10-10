@@ -57,7 +57,7 @@ public class NodeNavigation : MonoBehaviour {
             nextNode = GetNextNode();
             if (nextNode == null)
             {
-                this.PostNotification(DestinationReachedNotification, currentNode);
+                gameObject.PostNotification(DestinationReachedNotification, currentNode);
             }
         }
         transform.position = nextPosition;
@@ -152,7 +152,7 @@ public class NodeNavigation : MonoBehaviour {
             currentNode = tempNode;
             AddDestination(node);
         }
-        this.PostNotification(DestinationChangedNotification, node);
+        gameObject.PostNotification(DestinationChangedNotification, node);
     }
 
     public Node LastNode
@@ -172,6 +172,14 @@ public class NodeNavigation : MonoBehaviour {
         get
         {
             return nextNode;
+        }
+    }
+
+    public Node CurrentNode
+    {
+        get
+        {
+            return currentNode;
         }
     }
 

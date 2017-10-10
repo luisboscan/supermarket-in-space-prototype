@@ -8,6 +8,9 @@ public class CustomerManager : MonoBehaviour {
     public int currentDificultyIndex = 0;
     public DificultySetting[] dificultySettings;
     public GameObject customerPrefab;
+    public GameObject objectiveBubblePrefab;
+    public Material[] materials;
+    public Canvas canvas;
 
     private int currentCustomerAmount;
     private float timer;
@@ -68,7 +71,13 @@ public class CustomerManager : MonoBehaviour {
         timer = 0;
         nextSpawnRate = GetNextSpawnTime();
         GameObject customer = Instantiate(customerPrefab, GetNextSpawnPoint(), Quaternion.identity);
+        customer.GetComponent<NodeNavigation>().speed = GetNextSpeed();
         customer.GetComponent<Customer>().shoppingListItems = BuildShoppingList();
+        customer.GetComponent<Renderer>().material = materials[UnityEngine.Random.Range(0, materials.Length)];
+
+        GameObject objectiveBubble = Instantiate(objectiveBubblePrefab, canvas.gameObject.transform);
+        objectiveBubble.SetActive(false);
+        customer.GetComponent<Customer>().objectiveBubble = objectiveBubble.GetComponent<ObjectiveBubble>();
         return customer;
     }
 
@@ -84,10 +93,16 @@ public class CustomerManager : MonoBehaviour {
         return customerSpawnObjects[index].transform.position;
     }
 
+    private float GetNextSpeed()
+    {
+        return UnityEngine.Random.Range(dificultySettings[currentDificultyIndex].speedRange.min,
+            (dificultySettings[currentDificultyIndex].speedRange.max));
+    }
+
     private int GetNextShoppingListSize()
     {
-        return UnityEngine.Random.Range((int) dificultySettings[currentDificultyIndex].itemListRange.min,
-            ((int) dificultySettings[currentDificultyIndex].itemListRange.max) + 1);
+        return UnityEngine.Random.Range((int)dificultySettings[currentDificultyIndex].itemListRange.min,
+            ((int)dificultySettings[currentDificultyIndex].itemListRange.max) + 1);
     }
 
     private float GetNextSpawnTime()

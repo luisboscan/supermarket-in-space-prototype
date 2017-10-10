@@ -4,37 +4,70 @@ using UnityEngine;
 
 public class Task : MonoBehaviour
 {
+    public enum TaskType
+    {
+        GRABBING_ITEM,
+        RESTOCKING_ITEM,
+        PAYING,
+        OTHER
+    }
+
     public const string TaskCompleteNotification = "Tasks.TaskCompleteNotification";
     public const string TaskStartNotification = "Tasks.TaskStartNotification";
     public const string TaskStoppedNotification = "Tasks.TaskStoppedNotification";
 
+    public int peopleInTask;
     public float timeToComplete = 5f;
     public int priority = 1;
-    public LayerMask targetMask;
-    public ProgressBar progressBar;
+    public string targetTag;
+    public TaskUI taskUI;
+    public TaskType taskType;
+    public Vector3 taskUIOffset;
 
     private float counter;
-    private bool running;
+    public bool running;
+
+    private void Start()
+    {
+        taskUI.Init();
+    }
 
     public bool IsTaskAssignable(GameObject gameObject)
     {
-        return Util.IsObjectInLayerMask(targetMask, gameObject);
+        return gameObject.tag == targetTag;
+    }
+
+    public bool CanStartTask()
+    {
+        return true;
     }
 
     void Update()
     {
         if (!running)
         {
+            taskUI.SetPeopleInLineAmount(0);
             return;
         }
 
+        taskUI.SetPeopleInLineAmount(peopleInTask-1);
+
+        float timeModifier = 1;
+        if (taskType == TaskType.GRABBING_ITEM)
+        {
+            Resource resource = gameObject.GetComponent<Resource>();
+            timeModifier = 1 - (resource.currentAmount / resource.maxAmount);
+        }
+
+        float actualTimeToComplete = timeToComplete * timeModifier;
+
         counter += Time.deltaTime;
-        progressBar.SetValue(counter / timeToComplete);
-        if (counter >= timeToComplete)
+        taskUI.ProgressBar.SetValue(counter / actualTimeToComplete);
+        if (counter >= actualTimeToComplete)
         {
             Debug.Log("Task Finished");
             OnTaskFinished();
-            this.PostNotification(Task.TaskCompleteNotification);
+            gameObject.PostNotification(TaskCompleteNotification, this);
         }
     }
 
@@ -43,10 +76,10 @@ public class Task : MonoBehaviour
         Debug.Log("Task Started");
         counter = 0;
         running = true;
-        progressBar.gameObject.SetActive(true);
-        progressBar.Reset();
-        progressBar.gameObject.transform.position = Camera.main.WorldToScreenPoint(transform.position);
-        this.PostNotification(Task.TaskStartNotification);
+        taskUI.ProgressBar.Reset();
+        taskUI.gameObject.SetActive(true);
+        taskUI.gameObject.transform.position = Camera.main.WorldToScreenPoint(transform.position) + taskUIOffset;
+        gameObject.PostNotification(TaskStartNotification, this);
     }
 
     public void StopTask()
@@ -55,13 +88,13 @@ public class Task : MonoBehaviour
         OnTaskFinished();
         if (interrupted)
         {
-            this.PostNotification(Task.TaskStoppedNotification);
+            gameObject.PostNotification(TaskStoppedNotification, this);
         }
     }
 
     private void OnTaskFinished()
     {
-        progressBar.gameObject.SetActive(false);
+        taskUI.gameObject.SetActive(false);
         running = false;
     }
 }
