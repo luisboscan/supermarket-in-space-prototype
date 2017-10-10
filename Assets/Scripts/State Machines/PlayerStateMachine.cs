@@ -22,6 +22,7 @@ public class PlayerStateMachine : MonoBehaviour {
     void Init()
     {
         fsm = StateMachine<PlayerStates>.Initialize(this, startingState);
+
         initialized = true;
     }
 

@@ -1,0 +1,43 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Customer : MonoBehaviour {
+
+    public int notFoundItems;
+    public ShoppingListItem[] shoppingListItems;
+    public ObjectiveBubble objectiveBubble;
+    public int mood = 5;
+
+    private int currentItemIndex = -1;
+
+    public void MoveCurrentShoppingListItem()
+    {
+        currentItemIndex++;
+    }
+
+    public bool HasMoreShoppingListItems()
+    {
+        return currentItemIndex + 1 < shoppingListItems.Length;
+    }
+
+    public ShoppingListItem GetCurrentShoppingListItem()
+    {
+        return shoppingListItems[currentItemIndex];
+    }
+
+    public float GetNotFoundItemRatio()
+    {
+        return notFoundItems / GetTotalItemAmount();
+    }
+
+    public int GetTotalItemAmount()
+    {
+        int total = 0;
+        foreach (ShoppingListItem shoppingListItem in shoppingListItems)
+        {
+            total += shoppingListItem.amount;
+        }
+        return total;
+    }
+}

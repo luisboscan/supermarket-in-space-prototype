@@ -4,11 +4,14 @@ using UnityEngine;
 
 public class NodeNavigation : MonoBehaviour {
 
+    public const string DestinationReachedNotification = "Navigation.DestinationReachedNotification";
+    public const string DestinationChangedNotification = "Navigation.DestinationChangedNotification";
+
     public float speed = 5f;
-    public GraphContainer graphComponent;
     public List<Node> destinations;
     public NodeContainer startingNode;
-
+    
+    private GraphContainer graphComponent;
     private Queue<Node> queue;
     private Node lastNode;
     private Node currentNode;
@@ -17,6 +20,7 @@ public class NodeNavigation : MonoBehaviour {
 
     void Start ()
     {
+        graphComponent = GameObject.FindGameObjectWithTag("Graph").GetComponent<GraphContainer>();
         destinations = new List<Node>();
         if (startingNode == null)
         {
@@ -51,6 +55,10 @@ public class NodeNavigation : MonoBehaviour {
             lastNode = nextNode;
             currentNode = lastNode;
             nextNode = GetNextNode();
+            if (nextNode == null)
+            {
+                gameObject.PostNotification(DestinationReachedNotification, currentNode);
+            }
         }
         transform.position = nextPosition;
     }
@@ -126,23 +134,25 @@ public class NodeNavigation : MonoBehaviour {
         if (nextNode == null)
         {
             AddDestination(node);
-            return;
-        }
-        if (tempNode == null)
+        } else
         {
-            tempNode = graphComponent.Graph.CreateNode(transform.position);
+            if (tempNode == null)
+            {
+                tempNode = graphComponent.Graph.CreateNode(transform.position);
+            }
+            else
+            {
+                tempNode.Position = transform.position;
+            }
+            graphComponent.Graph.RemoveEdgesAroundNode(tempNode);
+            graphComponent.Graph.CreateEdge(tempNode, lastNode);
+            graphComponent.Graph.CreateEdge(tempNode, nextNode);
+            tempNode.PathFinder.Initialize();
+            Reset();
+            currentNode = tempNode;
+            AddDestination(node);
         }
-        else
-        {
-            tempNode.Position = transform.position;
-        }
-        graphComponent.Graph.RemoveEdgesAroundNode(tempNode);
-        graphComponent.Graph.CreateEdge(tempNode, lastNode);
-        graphComponent.Graph.CreateEdge(tempNode, nextNode);
-        tempNode.PathFinder.Initialize();
-        Reset();
-        currentNode = tempNode;
-        AddDestination(node);
+        gameObject.PostNotification(DestinationChangedNotification, node);
     }
 
     public Node LastNode
@@ -162,6 +172,14 @@ public class NodeNavigation : MonoBehaviour {
         get
         {
             return nextNode;
+        }
+    }
+
+    public Node CurrentNode
+    {
+        get
+        {
+            return currentNode;
         }
     }
 
