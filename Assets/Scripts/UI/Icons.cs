@@ -13,6 +13,7 @@ public class Icons : MonoBehaviour {
     public Sprite fruitIcon;
     public Sprite fishIcon;
     public Sprite cashIcon;
+    public Sprite exitIcon;
 
     public Sprite[] moods;
     public Color[] moodColors;

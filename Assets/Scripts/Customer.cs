@@ -28,7 +28,21 @@ public class Customer : MonoBehaviour {
 
     public float GetNotFoundItemRatio()
     {
-        return notFoundItems / GetTotalItemAmount();
+        return (float) notFoundItems / (float) GetTotalItemAmount();
+    }
+
+    public void HideBubbleElements()
+    {
+        objectiveBubble.HideAmount();
+        objectiveBubble.HideIcon();
+        objectiveBubble.HideMood();
+    }
+
+    public void ShowBubbleElements()
+    {
+        objectiveBubble.ShowAmount();
+        objectiveBubble.ShowIcon();
+        objectiveBubble.ShowMood();
     }
 
     public int GetTotalItemAmount()

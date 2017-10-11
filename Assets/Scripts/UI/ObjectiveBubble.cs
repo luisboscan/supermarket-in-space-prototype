@@ -14,9 +14,34 @@ public class ObjectiveBubble : MonoBehaviour {
         this.amount.text = amount.ToString();
     }
 
+    public void HideIcon()
+    {
+        icon.enabled = false;
+    }
+
+    public void HideMood()
+    {
+        mood.enabled = false;
+    }
+
     public void HideAmount()
     {
         amount.enabled = false;
+    }
+
+    public void ShowIcon()
+    {
+        icon.enabled = true;
+    }
+
+    public void ShowMood()
+    {
+        mood.enabled = true;
+    }
+
+    public void ShowAmount()
+    {
+        amount.enabled = true;
     }
 
     public void SetGroceryObjective(ShoppingSectionType shoppingSectionType)
@@ -33,5 +58,10 @@ public class ObjectiveBubble : MonoBehaviour {
     public void SetPaymentObjective()
     {
         icon.sprite = Icons.Instance.cashIcon;
+    }
+
+    public void SetExitObjective()
+    {
+        icon.sprite = Icons.Instance.exitIcon;
     }
 }

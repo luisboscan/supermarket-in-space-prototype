@@ -78,7 +78,7 @@ public class Task : MonoBehaviour
         running = true;
         taskUI.ProgressBar.Reset();
         taskUI.gameObject.SetActive(true);
-        taskUI.gameObject.transform.position = Camera.main.WorldToScreenPoint(transform.position) + taskUIOffset;
+        taskUI.gameObject.transform.position = Camera.main.WorldToScreenPoint(transform.position + taskUIOffset);
         gameObject.PostNotification(TaskStartNotification, this);
     }
 

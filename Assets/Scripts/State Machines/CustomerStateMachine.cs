@@ -38,7 +38,7 @@ public class CustomerStateMachine : MonoBehaviour {
 
     void OnDestinationReached(object sender, object args)
     {
-        customer.objectiveBubble.gameObject.SetActive(false);
+        customer.HideBubbleElements();
     }
 
     void OnTaskStarted(object sender, object args)
@@ -50,6 +50,9 @@ public class CustomerStateMachine : MonoBehaviour {
             ShoppingListItem shoppingListItem = customer.GetCurrentShoppingListItem();
             int difference = (int) resource.Remove(shoppingListItem.amount);
             customer.notFoundItems += difference;
+
+            customer.mood = (int) Mathf.Ceil(Mathf.Lerp(1, 5, 1 - customer.GetNotFoundItemRatio()));
+
             FSM.ChangeState(CustomerStates.GrabbingItem);
         }
         if (task.taskType == Task.TaskType.PAYING)
@@ -73,6 +76,7 @@ public class CustomerStateMachine : MonoBehaviour {
 
     void LookingForItem_Enter()
     {
+        customer.ShowBubbleElements();
         customer.objectiveBubble.SetAmount(customer.GetCurrentShoppingListItem().amount);
         customer.objectiveBubble.SetMood(customer.mood);
         customer.objectiveBubble.SetGroceryObjective(customer.GetCurrentShoppingListItem().shoppingSection);
@@ -125,6 +129,7 @@ public class CustomerStateMachine : MonoBehaviour {
     void GoingToPay_Enter()
     {
         nodeNavigation.SetDestination(graphContainer.GetPaymentNode().Node);
+        customer.ShowBubbleElements();
         customer.objectiveBubble.SetMood(customer.mood);
         customer.objectiveBubble.SetPaymentObjective();
         customer.objectiveBubble.HideAmount();
@@ -140,10 +145,17 @@ public class CustomerStateMachine : MonoBehaviour {
     void Exiting_Enter()
     {
         nodeNavigation.SetDestination(graphContainer.GetExitNode().Node);
+        customer.ShowBubbleElements();
+        customer.objectiveBubble.SetMood(customer.mood);
+        customer.objectiveBubble.SetExitObjective();
+        customer.objectiveBubble.HideAmount();
+        customer.objectiveBubble.gameObject.SetActive(true);
+        UpdateObjectiveBubblePosition();
     }
 
     void Exiting_Update()
     {
+        UpdateObjectiveBubblePosition();
         if (nodeNavigation.CurrentNode.Id == graphContainer.GetExitNode().Node.Id)
         {
             customerManager.RemoveCustomer(gameObject);
