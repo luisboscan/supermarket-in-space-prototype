@@ -22,9 +22,9 @@ public class Task : MonoBehaviour
     public string targetTag;
     public TaskUI taskUI;
     public TaskType taskType;
-    public Vector3 taskUIOffset;
 
     private float counter;
+    private Vector3 uiOffset = new Vector3(0, 0, 2);
     public bool running;
 
     private void Start()
@@ -50,7 +50,7 @@ public class Task : MonoBehaviour
             return;
         }
 
-        taskUI.SetPeopleInLineAmount(peopleInTask-1);
+        taskUI.SetPeopleInLineAmount(peopleInTask);
 
         float timeModifier = 1;
         if (taskType == TaskType.GRABBING_ITEM)
@@ -78,7 +78,7 @@ public class Task : MonoBehaviour
         running = true;
         taskUI.ProgressBar.Reset();
         taskUI.gameObject.SetActive(true);
-        taskUI.gameObject.transform.position = Camera.main.WorldToScreenPoint(transform.position + taskUIOffset);
+        taskUI.gameObject.transform.position = Camera.main.WorldToScreenPoint(transform.position + uiOffset);
         gameObject.PostNotification(TaskStartNotification, this);
     }
 

@@ -75,7 +75,7 @@ public class CustomerManager : MonoBehaviour {
         customer.GetComponent<Customer>().shoppingListItems = BuildShoppingList();
         customer.GetComponent<Renderer>().material = materials[UnityEngine.Random.Range(0, materials.Length)];
 
-        GameObject objectiveBubble = Instantiate(objectiveBubblePrefab, canvas.gameObject.transform);
+        GameObject objectiveBubble = Instantiate(objectiveBubblePrefab, canvas.gameObject.transform.Find("BubbleObjectiveGroup"));
         objectiveBubble.SetActive(false);
         customer.GetComponent<Customer>().objectiveBubble = objectiveBubble.GetComponent<ObjectiveBubble>();
         return customer;

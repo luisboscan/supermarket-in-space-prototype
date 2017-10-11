@@ -26,6 +26,6 @@ public class TaskUI : MonoBehaviour {
             return;
         }
         peopleInLineText.enabled = true;
-        peopleInLineText.text = "+" + amount.ToString();
+        peopleInLineText.text = amount.ToString();
     }
 }
