@@ -16,4 +16,9 @@ public class ShoppingSection : MonoBehaviour {
     public Node GetNode () {
         return destinationNodeContainer.Node;
     }
+
+    public Resource Resource
+    {
+        get { return resource; }
+    }
 }

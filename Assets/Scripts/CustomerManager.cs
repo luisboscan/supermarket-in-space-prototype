@@ -83,7 +83,7 @@ public class CustomerManager : MonoBehaviour {
 
     public void RemoveCustomer(GameObject gameObject)
     {
-        Destroy(gameObject.GetComponent<Customer>().objectiveBubble);
+        Destroy(gameObject.GetComponent<Customer>().objectiveBubble.gameObject);
         Destroy(gameObject);
         currentCustomerAmount--;
     }
