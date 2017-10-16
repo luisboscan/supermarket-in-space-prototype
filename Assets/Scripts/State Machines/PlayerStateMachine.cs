@@ -31,7 +31,13 @@ public class PlayerStateMachine : MonoBehaviour {
         SelectionArea selectionArea;
         if (playerInput.selected && (selectionArea = GetSelectedArea()) != null)
         {
-            playerNavigation.SetDestination(selectionArea.destinationNodeContainer.Node);
+            if (playerNavigation.CurrentNode == selectionArea.destinationNodeContainer.Node)
+            {
+                playerNavigation.gameObject.PostNotification(NodeNavigation.DestinationReachedNotification, selectionArea.destinationNodeContainer.Node);
+            } else
+            {
+                playerNavigation.SetDestination(selectionArea.destinationNodeContainer.Node);
+            }
         }
     }
 

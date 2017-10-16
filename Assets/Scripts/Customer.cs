@@ -5,6 +5,7 @@ using UnityEngine;
 public class Customer : MonoBehaviour {
 
     public int notFoundItems;
+    public Dictionary<ShoppingListItem, int> foundItems = new Dictionary<ShoppingListItem, int>();
     public ShoppingListItem[] shoppingListItems;
     public ObjectiveBubble objectiveBubble;
     public int mood = 5;

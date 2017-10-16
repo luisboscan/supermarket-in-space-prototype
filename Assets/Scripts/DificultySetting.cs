@@ -10,4 +10,5 @@ public struct DificultySetting {
     public Range itemListRange;
     public Range speedRange;
     public int maxCustomerAmount;
+    public float profitPercentage;
 }

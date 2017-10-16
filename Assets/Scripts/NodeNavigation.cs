@@ -78,7 +78,12 @@ public class NodeNavigation : MonoBehaviour {
 
     private Vector3 GetNextPosition()
     {
-        Vector3 nextPosition = Vector3.MoveTowards(transform.position, nextNode.Position, speed * Time.deltaTime);
+        float finalSpeed = speed * Time.deltaTime;
+        if (gameObject.tag != "Player")
+        {
+            finalSpeed *= GameState.Instance.globalSpeedModifier;
+        }
+        Vector3 nextPosition = Vector3.MoveTowards(transform.position, nextNode.Position, finalSpeed);
         float distance = Vector3.Distance(transform.position, nextPosition);
         float maxDistance = Vector3.Distance(transform.position, nextNode.Position);
         if (distance == 0 || distance > maxDistance)

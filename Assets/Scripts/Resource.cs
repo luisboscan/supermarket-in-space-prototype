@@ -6,8 +6,9 @@ public class Resource : MonoBehaviour {
 
     public float currentAmount;
     public float maxAmount = 10;
+    public float costPerUnit = 10;
 
-	void Start () {
+    void Start () {
         AddAll();
 	}
 
@@ -31,5 +32,14 @@ public class Resource : MonoBehaviour {
     public void AddAll()
     {
         currentAmount = maxAmount;
+    }
+
+    public int GetTotalCost()
+    {
+        if (currentAmount == maxAmount)
+        {
+            return 0;
+        }
+        return (int)(GameState.Instance.refillCost + (maxAmount - currentAmount) * costPerUnit);
     }
 }

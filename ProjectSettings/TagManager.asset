@@ -10,6 +10,7 @@ TagManager:
   - Payment
   - Exit
   - CustomerManager
+  - PlayerTaskUI
   layers:
   - Default
   - TransparentFX

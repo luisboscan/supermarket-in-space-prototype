@@ -43,7 +43,7 @@ public class DestinationNodeContainer : NodeContainer {
     {
         foreach (Task task in tasks)
         {
-            if (task.isActiveAndEnabled && task.IsTaskAssignable(gameObject))
+            if (task.isActiveAndEnabled && task.IsTaskAssignable(gameObject) && task.CanStartTask(gameObject))
             {
                 return task;
             }

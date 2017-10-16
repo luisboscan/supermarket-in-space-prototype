@@ -39,15 +39,18 @@ public class TaskHandler : MonoBehaviour {
 
     void OnDestinationReached(object sender, object args)
     {
-        Node node = ((Node)args);
-        DestinationNodeContainer destinationNodeContainer = (DestinationNodeContainer) graphContainer.GetNodeContainerForNode(node);
-
-        Task task = destinationNodeContainer.GetNextTaskForObject(gameObject);
-        if (task != null)
+        if (currentTask == null)
         {
-            currentTask = task;
-            currentTask.peopleInTask++;
-            GetComponent<NodeNavigation>().enabled = false;
+            Node node = ((Node)args);
+            DestinationNodeContainer destinationNodeContainer = (DestinationNodeContainer)graphContainer.GetNodeContainerForNode(node);
+
+            Task task = destinationNodeContainer.GetNextTaskForObject(gameObject);
+            if (task != null)
+            {
+                currentTask = task;
+                currentTask.peopleInTask++;
+                GetComponent<NodeNavigation>().enabled = false;
+            }
         }
     }
 

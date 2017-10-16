@@ -21,6 +21,6 @@ public class ResourceUI : MonoBehaviour {
         }
 
         progressBar.SetValue(resource.currentAmount / resource.maxAmount);
-        text.text = resource.currentAmount.ToString() + "/" + resource.maxAmount.ToString();
+        text.text = resource.currentAmount.ToString() + "/" + resource.maxAmount.ToString() + " - " + resource.GetTotalCost() + "$";
     }
 }

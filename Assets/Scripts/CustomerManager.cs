@@ -17,10 +17,14 @@ public class CustomerManager : MonoBehaviour {
     private float nextSpawnRate;
     private GameObject[] customerSpawnObjects;
 
+    private static CustomerManager instance;
+
     void Start () {
 
         customerSpawnObjects = GameObject.FindGameObjectsWithTag("CustomerSpawn");
         nextSpawnRate = GetNextSpawnTime();
+        instance = this;
+        GameState.Instance.SetDifficulty();
     }
 
     private ShoppingListItem[] BuildShoppingList()
@@ -58,7 +62,7 @@ public class CustomerManager : MonoBehaviour {
             return;
         }
 
-        timer += Time.deltaTime;
+        timer += Time.deltaTime * GameState.Instance.globalSpeedModifier * GameState.Instance.shipSpeed;
         if (timer > nextSpawnRate)
         {
             SpawnCustomer();
@@ -83,6 +87,8 @@ public class CustomerManager : MonoBehaviour {
 
     public void RemoveCustomer(GameObject gameObject)
     {
+        Customer customer = gameObject.GetComponent<Customer>();
+        GameState.Instance.AddRating(customer.mood);
         Destroy(gameObject.GetComponent<Customer>().objectiveBubble.gameObject);
         Destroy(gameObject);
         currentCustomerAmount--;
@@ -110,5 +116,10 @@ public class CustomerManager : MonoBehaviour {
     {
         return UnityEngine.Random.Range(dificultySettings[currentDificultyIndex].spawnRateRange.min, 
             dificultySettings[currentDificultyIndex].spawnRateRange.max);
+    }
+
+    public static CustomerManager Instance
+    {
+        get { return instance; }
     }
 }

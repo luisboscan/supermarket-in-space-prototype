@@ -24,10 +24,16 @@ public class Task : MonoBehaviour
     public TaskType taskType;
 
     private float counter;
+    private float timeModifier = 1;
     private Vector3 uiOffset = new Vector3(0, 0, 2);
     public bool running;
 
     private void Start()
+    {
+        Init();
+    }
+
+    protected void Init()
     {
         taskUI.Init();
     }
@@ -37,31 +43,29 @@ public class Task : MonoBehaviour
         return gameObject.tag == targetTag;
     }
 
-    public bool CanStartTask()
+    public virtual bool CanStartTask(GameObject gameObject)
     {
         return true;
     }
 
-    void Update()
+    protected virtual void Update()
     {
         if (!running)
         {
-            taskUI.SetPeopleInLineAmount(0);
+            if (taskUI.gameObject.tag != "PlayerTaskUI")
+                taskUI.SetPeopleInLineAmount(0);
             return;
         }
 
-        taskUI.SetPeopleInLineAmount(peopleInTask);
-
-        float timeModifier = 1;
-        if (taskType == TaskType.GRABBING_ITEM)
-        {
-            Resource resource = gameObject.GetComponent<Resource>();
-            timeModifier = 1 - (resource.currentAmount / resource.maxAmount);
-        }
+        if (taskUI.gameObject.tag != "PlayerTaskUI")
+            taskUI.SetPeopleInLineAmount(peopleInTask);
 
         float actualTimeToComplete = timeToComplete * timeModifier;
 
-        counter += Time.deltaTime;
+        float mod = Time.deltaTime;
+        if (taskUI.gameObject.tag != "PlayerTaskUI")
+            mod *= GameState.Instance.globalSpeedModifier;
+        counter += mod;
         taskUI.ProgressBar.SetValue(counter / actualTimeToComplete);
         if (counter >= actualTimeToComplete)
         {
@@ -78,8 +82,19 @@ public class Task : MonoBehaviour
         running = true;
         taskUI.ProgressBar.Reset();
         taskUI.gameObject.SetActive(true);
-        taskUI.gameObject.transform.position = Camera.main.WorldToScreenPoint(transform.position + uiOffset);
+        if (taskUI.gameObject.tag != "PlayerTaskUI")
+            taskUI.gameObject.transform.position = Camera.main.WorldToScreenPoint(transform.position + uiOffset);
         gameObject.PostNotification(TaskStartNotification, this);
+
+        if (taskType == TaskType.GRABBING_ITEM || taskType == TaskType.RESTOCKING_ITEM)
+        {
+            Resource resource = gameObject.GetComponent<Resource>();
+            timeModifier = Mathf.Lerp(1, 0.2f, (resource.currentAmount / resource.maxAmount));
+        }
+        else
+        {
+            timeModifier = 1;
+        }
     }
 
     public void StopTask()

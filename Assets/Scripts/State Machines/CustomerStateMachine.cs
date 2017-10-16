@@ -50,7 +50,7 @@ public class CustomerStateMachine : MonoBehaviour {
             ShoppingListItem shoppingListItem = customer.GetCurrentShoppingListItem();
             int difference = (int) resource.Remove(shoppingListItem.amount);
             customer.notFoundItems += difference;
-
+            customer.foundItems[shoppingListItem] = shoppingListItem.amount - difference;
             customer.mood = (int) Mathf.Ceil(Mathf.Lerp(1, 5, 1 - customer.GetNotFoundItemRatio()));
 
             FSM.ChangeState(CustomerStates.GrabbingItem);
@@ -70,6 +70,12 @@ public class CustomerStateMachine : MonoBehaviour {
         }
         if (task.taskType == Task.TaskType.PAYING)
         {
+            foreach (ShoppingListItem shoppingListItem in customer.foundItems.Keys)
+            {
+                ShoppingSectionType shoppingSectionType = shoppingListItem.shoppingSection;
+                ShoppingSection shoppingSection = graphContainer.GetShoppingSectionByType(shoppingSectionType);
+                GameState.Instance.money += Mathf.CeilToInt(GameState.Instance.soldPrice * shoppingSection.Resource.costPerUnit * customer.foundItems[shoppingListItem]);
+            }
             FSM.ChangeState(CustomerStates.Exiting);
         }
     }
