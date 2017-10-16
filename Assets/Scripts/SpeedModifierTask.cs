@@ -37,7 +37,7 @@ public class SpeedModifierTask : Task {
                 available = false;
                 timer = 0;
                 GameState.Instance.globalSpeedModifier = 1;
-            } else if (!available && timer >= cooldown)
+            } else if (!active && !available && timer >= cooldown)
             {
                 active = false;
                 available = true;

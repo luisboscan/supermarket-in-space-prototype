@@ -54,7 +54,6 @@ public class GameState : MonoBehaviour {
     {
         int index = ((int) rating) - 1;
         CustomerManager.Instance.currentDificultyIndex = index;
-        soldPrice = GetDifficultyPrice();
     }
 
     public float GetDifficultyPrice()

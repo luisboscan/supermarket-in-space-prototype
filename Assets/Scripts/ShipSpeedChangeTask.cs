@@ -27,6 +27,7 @@ public class ShipSpeedChangeTask : Task {
 
     void OnTaskComplete(object sender, object args)
     {
+        GameState.Instance.money -= cost;
         GameState.Instance.shipSpeed++;
         if (GameState.Instance.shipSpeed > 2)
         {

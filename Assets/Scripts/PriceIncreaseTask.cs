@@ -31,18 +31,20 @@ public class PriceIncreaseTask : Task {
         if (active)
         {
             GameState.Instance.soldPrice = GameState.Instance.GetDifficultyPrice() * priceModifier;
+        } else
+        {
+            GameState.Instance.soldPrice = GameState.Instance.GetDifficultyPrice();
         }
         if (active || !available)
         {
-            timer += Time.deltaTime;
+            timer += Time.deltaTime * GameState.Instance.globalSpeedModifier;
             if (active && timer >= activeTime)
             {
                 active = false;
                 available = false;
                 timer = 0;
                 GameState.Instance.globalSpeedModifier = 1;
-                GameState.Instance.soldPrice = GameState.Instance.GetDifficultyPrice();
-            } else if (!available && timer >= cooldown)
+            } else if (!active && !available && timer >= cooldown)
             {
                 active = false;
                 available = true;
@@ -61,5 +63,6 @@ public class PriceIncreaseTask : Task {
     {
         active = true;
         available = false;
+        GameState.Instance.money -= cost;
     }
 }
