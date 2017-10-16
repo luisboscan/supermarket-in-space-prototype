@@ -54,6 +54,11 @@ public class GameState : MonoBehaviour {
     {
         int index = ((int) rating) - 1;
         CustomerManager.Instance.currentDificultyIndex = index;
-        //soldPrice = 1 + CustomerManager.Instance.dificultySettings[index].profitPercentage;
+        soldPrice = GetDifficultyPrice();
+    }
+
+    public float GetDifficultyPrice()
+    {
+        return 1 + CustomerManager.Instance.dificultySettings[CustomerManager.Instance.currentDificultyIndex].profitPercentage;
     }
 }
