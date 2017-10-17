@@ -10,6 +10,7 @@ public class GameStateUI : MonoBehaviour {
     public Image ratingIcon;
     public Text shipSpeed;
     public Text timer;
+    public Text state;
 
     // Update is called once per frame
     void Update () {
@@ -19,13 +20,28 @@ public class GameStateUI : MonoBehaviour {
         ratingIcon.sprite = Icons.Instance.moods[moodIndex];
         ratingIcon.color = Icons.Instance.moodColors[moodIndex];
         shipSpeed.text = GameState.Instance.shipSpeed.ToString() + "x";
-        SetTime();
+
+        switch(GameState.Instance.state)
+        {
+            default:
+                SetTime(GameState.Instance.timer);
+                state.text = "OPEN";
+                break;
+            case GameState.State.BREAK_TIME:
+                SetTime(GameState.Instance.timer2);
+                state.text = "CLOSED";
+                break;
+            case GameState.State.CLOSING:
+                SetTime(GameState.Instance.timer);
+                state.text = "CLOSING";
+                break;
+        }
     }
 
-    private void SetTime()
+    private void SetTime(float counter)
     {
-        string minutes = Mathf.Floor(GameState.Instance.timer / 60).ToString("00");
-        string seconds = (GameState.Instance.timer % 60).ToString("00");
+        string minutes = Mathf.Floor(counter / 60).ToString("00");
+        string seconds = (counter % 60).ToString("00");
         timer.text = minutes + ":" + seconds;
     }
 }

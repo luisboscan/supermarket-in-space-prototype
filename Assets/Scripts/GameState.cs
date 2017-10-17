@@ -5,6 +5,13 @@ using UnityEngine.UI;
 
 public class GameState : MonoBehaviour {
 
+    public enum State
+    {
+        OPEN,
+        CLOSING,
+        BREAK_TIME
+    }
+
     public int money = 1000;
     public int refillCost = 100;
     public float soldPrice = 1.15f;
@@ -13,8 +20,9 @@ public class GameState : MonoBehaviour {
     public float timeLimit = 120;
     public float breakTime = 10;
     public float timer;
+    public State state;
 
-    private float timer2;
+    public float timer2;
     private float rating = 3;
     private Queue<int> lastRatings;
 
@@ -30,18 +38,25 @@ public class GameState : MonoBehaviour {
         lastRatings.Enqueue(3);
         lastRatings.Enqueue(3);
         timer = timeLimit;
+        timer2 = breakTime;
     }
 
     void Update()
     {
-        timer = Mathf.Max(timer - Time.deltaTime, 0);
+        timer = Mathf.Max(timer - Time.deltaTime * globalSpeedModifier, 0);
+        if (timer == 0)
+        {
+            state = State.CLOSING;
+        }
         if (timer == 0 && CustomerManager.Instance.currentCustomerAmount == 0)
         {
-            timer2 = Mathf.Max(timer2 - Time.deltaTime, 0);
+            timer2 = Mathf.Max(timer2 - Time.deltaTime * globalSpeedModifier, 0);
+            state = State.BREAK_TIME;
             if (timer2 == 0)
             {
                 timer2 = breakTime;
                 timer = timeLimit;
+                state = State.OPEN;
             }
         }
     }
