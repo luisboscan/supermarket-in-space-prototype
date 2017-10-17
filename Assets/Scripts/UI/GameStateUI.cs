@@ -29,7 +29,7 @@ public class GameStateUI : MonoBehaviour {
                 break;
             case GameState.State.BREAK_TIME:
                 SetTime(GameState.Instance.timer2);
-                state.text = "CLOSED";
+                state.text = "RESTOCK TIME";
                 break;
             case GameState.State.CLOSING:
                 SetTime(GameState.Instance.timer);
