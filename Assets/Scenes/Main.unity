@@ -7546,8 +7546,8 @@ MonoBehaviour:
   soldPrice: 1.15
   globalSpeedModifier: 1
   shipSpeed: 1
-  timeLimit: 120
-  breakTime: 10
+  timeLimit: 90
+  breakTime: 15
   timer: 0
   state: 0
   timer2: 0
