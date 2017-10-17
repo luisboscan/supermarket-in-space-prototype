@@ -10,6 +10,11 @@ public class GameState : MonoBehaviour {
     public float soldPrice = 1.15f;
     public float globalSpeedModifier = 1;
     public float shipSpeed = 1;
+    public float timeLimit = 120;
+    public float breakTime = 10;
+    public float timer;
+
+    private float timer2;
     private float rating = 3;
     private Queue<int> lastRatings;
 
@@ -24,6 +29,21 @@ public class GameState : MonoBehaviour {
         lastRatings.Enqueue(3);
         lastRatings.Enqueue(3);
         lastRatings.Enqueue(3);
+        timer = timeLimit;
+    }
+
+    void Update()
+    {
+        timer = Mathf.Max(timer - Time.deltaTime, 0);
+        if (timer == 0 && CustomerManager.Instance.currentCustomerAmount == 0)
+        {
+            timer2 = Mathf.Max(timer2 - Time.deltaTime, 0);
+            if (timer2 == 0)
+            {
+                timer2 = breakTime;
+                timer = timeLimit;
+            }
+        }
     }
 
     public static GameState Instance

@@ -397,59 +397,74 @@ MonoBehaviour:
   currentDificultyIndex: 0
   dificultySettings:
   - spawnRateRange:
-      min: 1
-      max: 3
+      min: 8
+      max: 11
     itemListRange:
       min: 1
-      max: 5
+      max: 2
+    itemAmountRange:
+      min: 1
+      max: 2
     speedRange:
-      min: 5
-      max: 8
-    maxCustomerAmount: 10
+      min: 2
+      max: 4
+    maxCustomerAmount: 3
     profitPercentage: 0.05
   - spawnRateRange:
+      min: 7
+      max: 10
+    itemListRange:
       min: 1
       max: 3
-    itemListRange:
+    itemAmountRange:
       min: 1
-      max: 5
+      max: 3
     speedRange:
-      min: 5
-      max: 8
-    maxCustomerAmount: 10
+      min: 3
+      max: 5
+    maxCustomerAmount: 5
     profitPercentage: 0.1
   - spawnRateRange:
-      min: 3
-      max: 6
+      min: 6
+      max: 9
     itemListRange:
       min: 1
-      max: 5
+      max: 3
+    itemAmountRange:
+      min: 2
+      max: 3
     speedRange:
       min: 4
       max: 6
-    maxCustomerAmount: 10
+    maxCustomerAmount: 7
     profitPercentage: 0.15
   - spawnRateRange:
-      min: 1
-      max: 3
-    itemListRange:
-      min: 1
-      max: 5
-    speedRange:
       min: 5
       max: 8
-    maxCustomerAmount: 10
+    itemListRange:
+      min: 1
+      max: 4
+    itemAmountRange:
+      min: 2
+      max: 4
+    speedRange:
+      min: 5
+      max: 7
+    maxCustomerAmount: 9
     profitPercentage: 0.2
   - spawnRateRange:
-      min: 1
-      max: 3
+      min: 4
+      max: 7
     itemListRange:
-      min: 1
-      max: 5
+      min: 3
+      max: 6
+    itemAmountRange:
+      min: 2
+      max: 4
     speedRange:
       min: 5
-      max: 8
-    maxCustomerAmount: 15
+      max: 9
+    maxCustomerAmount: 12
     profitPercentage: 0.25
   customerPrefab: {fileID: 1018844418251400, guid: ece0464e4306dd3418d64ca44dcbe6f2,
     type: 2}
@@ -463,6 +478,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 718397cfca13ee245870f4a16c861b27, type: 2}
   - {fileID: 2100000, guid: e0ccf6523a2f8fe4faf8ae7eaf3bcd50, type: 2}
   canvas: {fileID: 1359576179}
+  currentCustomerAmount: 0
 --- !u!4 &94154193
 Transform:
   m_ObjectHideFlags: 0
@@ -2279,6 +2295,84 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 400966226}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &416361087
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 1505941060129838, guid: da5c6a8f19e4d2b4aba6ece359835ced,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 416361088}
+  - component: {fileID: 416361090}
+  - component: {fileID: 416361089}
+  m_Layer: 5
+  m_Name: Timer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &416361088
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 224942503929205126, guid: da5c6a8f19e4d2b4aba6ece359835ced,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 416361087}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1.0000045, y: 1.0000045, z: 1.0000045}
+  m_Children: []
+  m_Father: {fileID: 642510833}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 419.44, y: -278.8}
+  m_SizeDelta: {x: 200, y: 40}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &416361089
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 114478268592653654, guid: da5c6a8f19e4d2b4aba6ece359835ced,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 416361087}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_FontData:
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_FontSize: 24
+    m_FontStyle: 1
+    m_BestFit: 0
+    m_MinSize: 2
+    m_MaxSize: 40
+    m_Alignment: 5
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: 05:01
+--- !u!222 &416361090
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 222084537852380596, guid: da5c6a8f19e4d2b4aba6ece359835ced,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 416361087}
 --- !u!1 &421607447
 GameObject:
   m_ObjectHideFlags: 0
@@ -3401,7 +3495,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   peopleInTask: 0
-  timeToComplete: 5
+  timeToComplete: 4
   priority: 1
   targetTag: Customer
   taskUI: {fileID: 653630365}
@@ -3483,6 +3577,7 @@ RectTransform:
   - {fileID: 352938036}
   - {fileID: 1579203283}
   - {fileID: 720477673}
+  - {fileID: 416361088}
   m_Father: {fileID: 1359576180}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3506,6 +3601,7 @@ MonoBehaviour:
   refillTax: {fileID: 1809907765}
   ratingIcon: {fileID: 352938037}
   shipSpeed: {fileID: 720477674}
+  timer: {fileID: 416361089}
 --- !u!1 &649125647
 GameObject:
   m_ObjectHideFlags: 0
@@ -3721,12 +3817,12 @@ Prefab:
     - target: {fileID: 224449703748555102, guid: fd3fffc21dbd1834cb2dccafd2d243f8,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 300
+      value: 234.06
       objectReference: {fileID: 0}
     - target: {fileID: 224449703748555102, guid: fd3fffc21dbd1834cb2dccafd2d243f8,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -280.12
+      value: -279.5
       objectReference: {fileID: 0}
     - target: {fileID: 224449703748555102, guid: fd3fffc21dbd1834cb2dccafd2d243f8,
         type: 2}
@@ -7375,6 +7471,9 @@ MonoBehaviour:
   soldPrice: 1.15
   globalSpeedModifier: 1
   shipSpeed: 1
+  timeLimit: 120
+  breakTime: 10
+  timer: 0
 --- !u!1001 &1252837568
 Prefab:
   m_ObjectHideFlags: 0
@@ -10815,7 +10914,7 @@ MonoBehaviour:
   taskUI: {fileID: 1484694201}
   taskType: 3
   running: 0
-  cost: 10
+  cost: 5
   text: {fileID: 1114842165}
 --- !u!114 &1857801687
 MonoBehaviour:
@@ -11729,7 +11828,7 @@ MonoBehaviour:
   taskUI: {fileID: 1484694201}
   taskType: 3
   running: 0
-  cost: 50
+  cost: 60
   speedModifier: 0.25
   cooldown: 20
   activeTime: 15

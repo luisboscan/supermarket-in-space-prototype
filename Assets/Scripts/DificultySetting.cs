@@ -8,6 +8,7 @@ public struct DificultySetting {
 
     public Range spawnRateRange;
     public Range itemListRange;
+    public Range itemAmountRange;
     public Range speedRange;
     public int maxCustomerAmount;
     public float profitPercentage;

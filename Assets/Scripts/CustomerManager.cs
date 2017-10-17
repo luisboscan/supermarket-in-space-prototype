@@ -12,7 +12,7 @@ public class CustomerManager : MonoBehaviour {
     public Material[] materials;
     public Canvas canvas;
 
-    private int currentCustomerAmount;
+    public int currentCustomerAmount;
     private float timer;
     private float nextSpawnRate;
     private GameObject[] customerSpawnObjects;
@@ -22,7 +22,7 @@ public class CustomerManager : MonoBehaviour {
     void Start () {
 
         customerSpawnObjects = GameObject.FindGameObjectsWithTag("CustomerSpawn");
-        nextSpawnRate = GetNextSpawnTime();
+        nextSpawnRate = 2f;
         instance = this;
         GameState.Instance.SetDifficulty();
     }
@@ -34,7 +34,7 @@ public class CustomerManager : MonoBehaviour {
         ShoppingListItem[] shoppingList = new ShoppingListItem[GetNextShoppingListSize()];
         for (int i=0; i<shoppingList.Length; i++) {
             ShoppingListItem shoppingListItem = shoppingList[i];
-            shoppingListItem.amount = UnityEngine.Random.Range(1, 4);
+            shoppingListItem.amount = GetNextItemAmount();
             int shoppingSectionIndex = UnityEngine.Random.Range(0, shoppingSectionList.Count);
             ShoppingSectionType shoppingSection = shoppingSectionList[shoppingSectionIndex];
             shoppingListItem.shoppingSection = shoppingSection;
@@ -62,10 +62,13 @@ public class CustomerManager : MonoBehaviour {
             return;
         }
 
-        timer += Time.deltaTime * GameState.Instance.globalSpeedModifier * GameState.Instance.shipSpeed;
-        if (timer > nextSpawnRate)
+        if (GameState.Instance.timer > 0)
         {
-            SpawnCustomer();
+            timer += Time.deltaTime * GameState.Instance.globalSpeedModifier * GameState.Instance.shipSpeed;
+            if (timer > nextSpawnRate)
+            {
+                SpawnCustomer();
+            }
         }
     }
 
@@ -110,6 +113,12 @@ public class CustomerManager : MonoBehaviour {
     {
         return UnityEngine.Random.Range((int)dificultySettings[currentDificultyIndex].itemListRange.min,
             ((int)dificultySettings[currentDificultyIndex].itemListRange.max) + 1);
+    }
+
+    private int GetNextItemAmount()
+    {
+        return UnityEngine.Random.Range((int)dificultySettings[currentDificultyIndex].itemAmountRange.min,
+            ((int)dificultySettings[currentDificultyIndex].itemAmountRange.max) + 1);
     }
 
     private float GetNextSpawnTime()

@@ -60,7 +60,7 @@ public class TaskHandler : MonoBehaviour {
         FreeTask();
     }
 
-    void FreeTask()
+    public void FreeTask()
     {
         if (currentTask != null)
         {

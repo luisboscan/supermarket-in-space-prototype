@@ -46,13 +46,6 @@ public class CustomerStateMachine : MonoBehaviour {
         Task task = (Task) args;
         if (task.taskType == Task.TaskType.GRABBING_ITEM)
         {
-            Resource resource = task.GetComponent<Resource>();
-            ShoppingListItem shoppingListItem = customer.GetCurrentShoppingListItem();
-            int difference = (int) resource.Remove(shoppingListItem.amount);
-            customer.notFoundItems += difference;
-            customer.foundItems[shoppingListItem] = shoppingListItem.amount - difference;
-            customer.mood = (int) Mathf.Ceil(Mathf.Lerp(1, 5, 1 - customer.GetNotFoundItemRatio()));
-
             FSM.ChangeState(CustomerStates.GrabbingItem);
         }
         if (task.taskType == Task.TaskType.PAYING)
@@ -61,11 +54,24 @@ public class CustomerStateMachine : MonoBehaviour {
         }
     }
 
+    private void UpdateCustomer(int difference)
+    {
+        ShoppingListItem shoppingListItem = customer.GetCurrentShoppingListItem();
+        customer.notFoundItems += difference;
+        customer.foundItems[shoppingListItem] = shoppingListItem.amount - difference;
+        customer.mood = (int)Mathf.Ceil(Mathf.Lerp(1, 5, 1 - customer.GetNotFoundItemRatio()));
+    }
+
     void OnTaskCompleted(object sender, object args)
     {
         Task task = (Task)args;
         if (task.taskType == Task.TaskType.GRABBING_ITEM)
         {
+            Resource resource = task.GetComponent<Resource>();
+            ShoppingListItem shoppingListItem = customer.GetCurrentShoppingListItem();
+            int difference = (int)resource.Remove(shoppingListItem.amount);
+            UpdateCustomer(difference);
+
             FSM.ChangeState(CustomerStates.ChoosingItem);
         }
         if (task.taskType == Task.TaskType.PAYING)
