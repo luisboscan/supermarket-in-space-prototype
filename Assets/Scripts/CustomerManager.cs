@@ -62,13 +62,16 @@ public class CustomerManager : MonoBehaviour {
             return;
         }
 
-        if (GameState.Instance.timer > 0)
+        if (GameState.Instance.state == GameState.State.OPEN)
         {
             timer += Time.deltaTime * GameState.Instance.globalSpeedModifier * GameState.Instance.shipSpeed;
             if (timer > nextSpawnRate)
             {
                 SpawnCustomer();
             }
+        } else
+        {
+            timer = 0;
         }
     }
 

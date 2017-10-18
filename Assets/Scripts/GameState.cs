@@ -9,7 +9,8 @@ public class GameState : MonoBehaviour {
     {
         OPEN,
         CLOSING,
-        BREAK_TIME
+        BREAK_TIME,
+        GAME_OVER
     }
 
     public int money = 1000;
@@ -20,44 +21,62 @@ public class GameState : MonoBehaviour {
     public float timeLimit = 120;
     public float breakTime = 10;
     public float timer;
+    public int baseGoal = 1200;
+    public int goalIncrease = 100;
+    public int currentGoal;
     public State state;
 
-    public float timer2;
     private float rating = 3;
-    private Queue<int> lastRatings;
+    private Queue<float> lastRatings;
 
     private static GameState instance;
 
     public void Awake()
     {
         instance = this;
-        lastRatings = new Queue<int>();
-        lastRatings.Enqueue(3);
-        lastRatings.Enqueue(3);
-        lastRatings.Enqueue(3);
-        lastRatings.Enqueue(3);
-        lastRatings.Enqueue(3);
+        lastRatings = new Queue<float>();
+        for(int i=0; i<5; i++)
+        {
+            lastRatings.Enqueue(rating);
+        }
         timer = timeLimit;
-        timer2 = breakTime;
-    }
+        currentGoal = baseGoal;
+        state = State.OPEN;
+}
 
     void Update()
     {
-        timer = Mathf.Max(timer - Time.deltaTime * globalSpeedModifier, 0);
-        if (timer == 0)
+        switch(state)
         {
-            state = State.CLOSING;
-        }
-        if (timer == 0 && CustomerManager.Instance.currentCustomerAmount == 0)
-        {
-            timer2 = Mathf.Max(timer2 - Time.deltaTime * globalSpeedModifier, 0);
-            state = State.BREAK_TIME;
-            if (timer2 == 0)
-            {
-                timer2 = breakTime;
-                timer = timeLimit;
-                state = State.OPEN;
-            }
+            case State.OPEN:
+                timer = Mathf.Max(timer - Time.deltaTime * globalSpeedModifier, 0);
+                if (timer == 0)
+                {
+                    state = State.CLOSING;
+                }
+                break;
+            case State.CLOSING:
+                if(CustomerManager.Instance.currentCustomerAmount == 0)
+                {
+                    if (money < currentGoal)
+                    {
+                        state = State.GAME_OVER;
+                    } else
+                    {
+                        currentGoal += goalIncrease;
+                        timer = breakTime;
+                        state = State.BREAK_TIME;
+                    }
+                }
+                break;
+            case State.BREAK_TIME:
+                timer = Mathf.Max(timer - Time.deltaTime * globalSpeedModifier, 0);
+                if (timer == 0)
+                {
+                    state = State.OPEN;
+                    timer = timeLimit;
+                }
+                break;
         }
     }
 
@@ -76,12 +95,12 @@ public class GameState : MonoBehaviour {
         lastRatings.Dequeue();
         lastRatings.Enqueue(rating);
 
-        int totalRatings = 0;
+        float totalRatings = 0;
         foreach(int currentRating in lastRatings)
         {
             totalRatings += currentRating;
         }
-        this.rating = totalRatings / lastRatings.Count;
+        this.rating = totalRatings / (float) lastRatings.Count;
         SetDifficulty();
     }
 

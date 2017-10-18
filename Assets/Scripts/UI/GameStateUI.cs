@@ -11,6 +11,7 @@ public class GameStateUI : MonoBehaviour {
     public Text shipSpeed;
     public Text timer;
     public Text state;
+    public Text goal;
 
     // Update is called once per frame
     void Update () {
@@ -20,20 +21,22 @@ public class GameStateUI : MonoBehaviour {
         ratingIcon.sprite = Icons.Instance.moods[moodIndex];
         ratingIcon.color = Icons.Instance.moodColors[moodIndex];
         shipSpeed.text = GameState.Instance.shipSpeed.ToString() + "x";
+        goal.text = GameState.Instance.currentGoal.ToString() + "$";
+        SetTime(GameState.Instance.timer);
 
-        switch(GameState.Instance.state)
+        switch (GameState.Instance.state)
         {
-            default:
-                SetTime(GameState.Instance.timer);
+            case GameState.State.OPEN:
                 state.text = "OPEN";
                 break;
             case GameState.State.BREAK_TIME:
-                SetTime(GameState.Instance.timer2);
-                state.text = "RESTOCK TIME";
+                state.text = "BREAK TIME";
                 break;
             case GameState.State.CLOSING:
-                SetTime(GameState.Instance.timer);
                 state.text = "CLOSING";
+                break;
+            case GameState.State.GAME_OVER:
+                state.text = "GAME OVER";
                 break;
         }
     }
