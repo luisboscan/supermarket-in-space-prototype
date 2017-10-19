@@ -13,6 +13,7 @@ public class GameState : MonoBehaviour {
         GAME_OVER
     }
 
+    public int level = 1;
     public int money = 1000;
     public int refillCost = 100;
     public float soldPrice = 1.15f;
@@ -42,6 +43,7 @@ public class GameState : MonoBehaviour {
         timer = timeLimit;
         currentGoal = baseGoal;
         state = State.OPEN;
+        level = 1;
 }
 
     void Update()
@@ -63,6 +65,7 @@ public class GameState : MonoBehaviour {
                         state = State.GAME_OVER;
                     } else
                     {
+                        level++;
                         currentGoal += goalIncrease;
                         timer = breakTime;
                         state = State.BREAK_TIME;

@@ -12,6 +12,7 @@ public class GameStateUI : MonoBehaviour {
     public Text timer;
     public Text state;
     public Text goal;
+    public Text level;
 
     // Update is called once per frame
     void Update () {
@@ -22,6 +23,7 @@ public class GameStateUI : MonoBehaviour {
         ratingIcon.color = Icons.Instance.moodColors[moodIndex];
         shipSpeed.text = GameState.Instance.shipSpeed.ToString() + "x";
         goal.text = GameState.Instance.currentGoal.ToString() + "$";
+        level.text = "Level " + GameState.Instance.level.ToString();
         SetTime(GameState.Instance.timer);
 
         switch (GameState.Instance.state)
